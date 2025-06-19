@@ -8,15 +8,15 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { IUser } from '@/interfaces/user.interfaces';
 import { User } from '@/entities/user.entitie';
 import { ERROR_ENUM } from '@/enums/messege.enum';
+import { SinginSinguptDto } from './dto/singin-singup.dto';
 
 @Injectable()
 export class UserService {
   constructor(private jwtService: JwtService) {}
 
-  async create(createUserDto: IUser) {
+  async create(createUserDto: SinginSinguptDto) {
     if ((await User.find({ email: createUserDto.email }).countDocuments()) > 0)
       throw new ConflictException(ERROR_ENUM.USER_EXIST);
     const hashedPassword: string = await bcrypt.hash(
@@ -27,7 +27,7 @@ export class UserService {
     return await User.create(createUserDto);
   }
 
-  async auth(payload: IUser) {
+  async auth(payload: SinginSinguptDto) {
     const user = await User.findOne({ email: payload.email });
 
     if (user) {
