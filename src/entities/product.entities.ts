@@ -1,5 +1,5 @@
 import { IProduct } from '@/interfaces/product.interfaces';
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 
 export const ProductsSchema = new Schema<IProduct>(
   {
@@ -8,6 +8,10 @@ export const ProductsSchema = new Schema<IProduct>(
     img: String,
     price: Number,
     stock: Number,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Users',
+    },
   },
   { collection: 'Products', timestamps: true },
 );
